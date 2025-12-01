@@ -5,14 +5,14 @@ pipeline {
 
         stage("Checkout code") {
             steps {
-                git branch: 'peter-branch', url: 'https://github.com/bigcephas1/React-ToDoList.git'
+                git branch: 'main', url: 'https://github.com/queenestydev/React-ToDoList.git'
             }
         }
 
         stage("Build image and push") {
             steps {
                 withCredentials([
-                    usernamePassword(credentialsId: 'docker_creds', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')
+                    usernamePassword(credentialsId: 'docker_cred', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')
                 ]) {
 
                     sh '''
@@ -31,7 +31,7 @@ pipeline {
                 withCredentials([
                     sshUserPrivateKey(credentialsId: 'EC2_KEY', keyFileVariable: 'SSH_KEY'),
                     string(credentialsId: 'EC2_HOST', variable: 'EC2_HOST'),
-                    usernamePassword(credentialsId: 'docker_creds', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')
+                    usernamePassword(credentialsId: 'docker_cred', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')
                 ]) {
 
                     sh '''
